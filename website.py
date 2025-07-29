@@ -1,4 +1,9 @@
-border-radius: 12px;
+import streamlit as st
+
+st.markdown("""
+    <style>
+        .your-custom-class {
+            border-radius: 12px;
             font-size: 0.8rem;
             font-weight: 600;
         }
@@ -43,7 +48,6 @@ border-radius: 12px;
             transform: translateY(-1px);
         }
 
-        /* Toast notification system */
         .toast {
             position: fixed;
             top: 20px;
@@ -90,7 +94,6 @@ border-radius: 12px;
             }
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -135,7 +138,6 @@ border-radius: 12px;
             }
         }
 
-        /* Loading animation */
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -153,7 +155,6 @@ border-radius: 12px;
             }
         }
 
-        /* Accessibility */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -162,7 +163,6 @@ border-radius: 12px;
             }
         }
 
-        /* Focus states for accessibility */
         .nav-button:focus,
         .tab-btn:focus,
         .profile-tab:focus,
@@ -172,7 +172,6 @@ border-radius: 12px;
             outline-offset: 2px;
         }
 
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -190,17 +189,16 @@ border-radius: 12px;
             background: rgba(124, 58, 237, 0.7);
         }
 
-        /* Hide any overflow text */
         body {
             overflow-x: hidden;
         }
 
-        /* Ensure no white text bleeds through */
         .main-content {
             position: relative;
             z-index: 20;
         }
     </style>
+""", unsafe_allow_html=True)
     
     <script>
         // Define functions IMMEDIATELY before any HTML that uses them
