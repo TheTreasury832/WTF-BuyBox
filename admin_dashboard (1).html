@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wholesale2Flip Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #f59e0b;
+            --accent-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+            --border-color: #e5e7eb;
+            --text-muted: #6b7280;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            border-right: 3px solid transparent;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+            background-color: rgba(30, 58, 138, 0.05);
+            border-right-color: var(--primary-color);
+        }
+
+        .nav-link .icon {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-card.revenue {
+            border-left-color: var(--accent-color);
+        }
+
+        .stat-card.users {
+            border-left-color: var(--info-color);
+        }
+
+        .stat-card.properties {
+            border-left-color: var(--warning-color);
+        }
+
+        .stat-card.deals {
+            border-left-color: var(--danger-color);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: var(--accent-color);
+        }
+
+        .stat-change.negative {
+            color: var(--danger-color);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            background-color: var(--light-color);
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .table tr:hover {
+            background-color: rgba(30, 58, 138, 0.02);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1e40af;
+        }
+
+        .btn-secondary {
+            background-color: var(--text-muted);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--accent-color);
+        }
+
+        .badge-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .badge-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--info-color);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        /* Charts */
+        .chart-container {
+            height: 300px;
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Page-specific styles */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .property-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--light-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo">W2F Admin</a>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-section="overview">
+                            <span class="icon">📊</span>
+                            Overview
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="users">
+                            <span class="icon">👥</span>
+                            Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="properties">
+                            <span class="icon">🏠</span>
+                            Properties
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="deals">
+                            <span class="icon">💰</span>
+                            Deals
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="analytics">
+                            <span class="icon">📈</span>
+                            Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="subscriptions">
+                            <span class="icon">💳</span>
+                            Subscriptions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="settings">
+                            <span class="icon">⚙️</span>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- Overview Section -->
+            <div id="overview" class="content-section active">
+                <div class="header">
+                    <h1 class="page-title">Dashboard Overview</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary">
+                            <span>📊</span>
+                            Generate Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card revenue">
+                        <div class="stat-header">
+                            <span class="stat-title">Monthly Revenue</span>
+                            <span class="stat-icon">💰</span>
+                        </div>
+                        <div class="stat-value">$127,430</div>
+                        <div class="stat-change positive">+12.5% from last month</div>
+                    </div>
+
+                    <div class="stat-card users">
+                        <div class="stat-header">
+                            <span class="stat-title">Active Users</span>
+                            <span class="stat-icon">👥</span>
+                        </div>
+                        <div class="stat-value">2,847</div>
+                        <div class="stat-change positive">+8.2% from last month</div>
+                    </div>
+
+                    <div class="stat-card properties">
+                        <div class="stat-header">
+                            <span class="stat-title">Properties Listed</span>
+                            <span class="stat-icon">🏠</span>
+                        </div>
+                        <div class="stat-value">1,234</div>
+                        <div class="stat-change positive">+15.3% from last month</div>
+                    </div>
+
+                    <div class="stat-card deals">
+                        <div class="stat-header">
+                            <span class="stat-title">Deals Closed</span>
+                            <span class="stat-icon">✅</span>
+                        </div>
+                        <div class="stat-value">189</div>
+                        <div class="stat-change negative">-3.1% from last month</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Activity</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Property</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2 mins ago</td>
+                                    <td>John Smith</td>
+                                    <td>Property Match</td>
+                                    <td>123 Main St, Atlanta</td>
+                                    <td><span class="badge badge-success">Matched</span></td>
+                                </tr>
+                                <tr>
+                                    <td>5 mins ago</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>Deal Closed</td>
+                                    <td>456 Oak Ave, Birmingham</td>
+                                    <td><span class="badge badge-success">Closed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>12 mins ago</td>
+                                    <td>Mike Wilson</td>
+                                    <td>Property Added</td>
+                                    <td>789 Pine St, Nashville</td>
+                                    <td><span class="badge badge-info">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>18 mins ago</td>
+                                    <td>Lisa Davis</td>
+                                    <td>Buyer Registered</td>
+                                    <td>-</td>
+                                    <td><span class="badge badge-warning">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Performance Metrics</h2>
+                    </div>
+                    <div class="chart-container">
+                        <p>Chart visualization would be rendered here using Chart.js or similar library</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users" class="content-section">
+                <div class="header">
+                    <h1 class="page-title">User Management</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openModal('addUserModal')">
+                            <span>➕</span>
+                            Add User
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <input type="text" class="form-control search-box" placeholder="Search users...">
+                    <select class="form-control">
+                        <option>All Subscriptions</option>
+                        <option>Starter</option>
+                        <option>Professional</option>
+                        <option>Elite</option>
+                    </select>
+                    <select class="form-control">
+                        <option>All Status</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                        <option>Suspended</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Subscription</th>
+                                    <th>Joined</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                            <div class="user-avatar">JS</div>
+                                            <div>
+                                                <div style="font-weight: 600;">John Smith</div>
+                                                <div style="font-size: 0.75rem; color: var(--text-muted);">ID: user_123</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>john.smith@example.com</td>
+                                    <td><span class="badge badge-success">Professional</span></td>
+                                    <td>Jan 15, 2025</td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-secondary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Suspend</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                            <div class="user-avatar">SJ</div>
+                                            <div>
+                                                <div style="font-weight: 600;">Sarah Johnson</div>
+                                                <div style="font-size: 0.75rem; color: var(--text-muted);">ID: user_124</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>sarah.johnson@example.com</td>
+                                    <td><span class="badge badge-warning">Starter</span></td>
+                                    <td>Jan 10, 2025</td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-secondary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Suspend</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                            <div class="user-avatar">MW</div>
+                                            <div>
+                                                <div style="font-weight: 600;">Mike Wilson</div>
+                                                <div style="font-size: 0.75rem; color: var(--text-muted);">ID: user_125</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>mike.wilson@example.com</td>
+                                    <td><span class="badge badge-info">Elite</span></td>
+                                    <td>Jan 8, 2025</td>
+                                    <td><span class="badge badge-danger">Suspended</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-secondary">Edit</button>
+                                            <button class="btn btn-sm btn-success">Activate</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Properties Section -->
+            <div id="properties" class="content-section">
+                <div class="header">
+                    <h1 class="page-title">Property Management</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openModal('addPropertyModal')">
+                            <span>🏠</span>
+                            Add Property
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <input type="text" class="form-control search-box" placeholder="Search properties...">
+                    <select class="form-control">
+                        <option>All Markets</option>
+                        <option>Atlanta</option>
+                        <option>Birmingham</option>
+                        <option>Nashville</option>
+                        <option>Memphis</option>
+                    </select>
+                    <select class="form-control">
+                        <option>All Status</option>
+                        <option>Available</option>
+                        <option>Under Contract</option>
+                        <option>Sold</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Address</th>
+                                    <th>Price</th>
+                                    <th>ARV</th>
+                                    <th>Matches</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                            <div class="property-image" style="background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect fill=\"%23e5e7eb\" width=\"100\" height=\"100\"/><text x=\"50\" y=\"55\" text-anchor=\"middle\" fill=\"%236b7280\" font-size=\"14\">🏠</text></svg>'); background-size: cover;"></div>
+                                            <div>
+                                                <div style="font-weight: 600;">3BR/2BA House</div>
+                                                <div style="font-size: 0.75rem; color: var(--text-muted);">ID: prop_123</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>123 Main St, Atlanta, GA 30309</td>
+                                    <td>$125,000</td>
+                                    <td>$185,000</td>
+                                    <td><span class="badge badge-success">5 matches</span></td>
+                                    <td><span class="badge badge-info">Available</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-secondary">Edit</button>
+                                            <button class="btn btn-sm btn-primary">View Matches</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                            <div class="property-image" style="background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect fill=\"%23e5e7eb\" width=\"100\" height=\"100\"/><text x=\"50\" y=\"55\" text-anchor=\"middle\" fill=\"%236b7280\" font-size=\"14\">🏠</text></svg>'); background-size: cover;"></div>
+                                            <div>
+                                                <div style="font-weight: 600;">2BR/1BA Condo</div>
+                                                <div style="font-size: 0.75rem; color: var(--text-muted);">ID: prop_124</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>456 Oak Ave, Birmingham, AL 35203</td>
+                                    <td>$85,000</td>
+                                    <td>$135,000</td>
+                                    <td><span class="badge badge-warning">2 matches</span></td>
+                                    <td><span class="badge badge-success">Sold</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-secondary">View</button>
+                                            <button class="btn btn-sm btn-success">Deal Details</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deals Section -->
+            <div id="deals" class="content-section">
+                <div class="header">
+                    <h1 class="page-title">Deal Management</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary">
+                            <span>📊</span>
+                            Export Deals
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Total Deal Volume</span>
+                            <span class="stat-icon">💰</span>
+                        </div>
+                        <div class="stat-value">$2.8M</div>
+                        <div class="stat-change positive">+18.5% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Average Deal Size</span>
+                            <span class="stat-icon">📈</span>
+                        </div>
+                        <div class="stat-value">$147K</div>
+                        <div class="stat-change positive">+5.2% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Close Rate</span>
+                            <span class="stat-icon">🎯</span>
+                        </div>
+                        <div class="stat-value">73%</div>
+                        <div class="stat-change positive">+2.1% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Avg Days to Close</span>
+                            <span class="stat-icon">⏰</span>
+                        </div>
+                        <div class="stat-value">18 days</div>
+                        <div class="stat-change negative">+1.2 from last month</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Deals</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Deal ID</th>
+                                    <th>Property</th>
+                                    <th>Buyer</th>
+                                    <th>Purchase Price</th>
+                                    <th>Commission</th>
+                                    <th>Status</th>
+                                    <th>Close Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>D-2025-001</strong></td>
+                                    <td>123 Main St, Atlanta</td>
+                                    <td>John Smith</td>
+                                    <td>$125,000</td>
+                                    <td>$5,000</td>
+                                    <td><span class="badge badge-success">Closed</span></td>
+                                    <td>Jan 20, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>D-2025-002</strong></td>
+                                    <td>456 Oak Ave, Birmingham</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>$85,000</td>
+                                    <td>$3,500</td>
+                                    <td><span class="badge badge-warning">Under Contract</span></td>
+                                    <td>Jan 25, 2025</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>D-2025-003</strong></td>
+                                    <td>789 Pine St, Nashville</td>
+                                    <td>Mike Wilson</td>
+                                    <td>$210,000</td>
+                                    <td>$8,500</td>
+                                    <td><span class="badge badge-info">In Negotiation</span></td>
+                                    <td>Feb 1, 2025</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics" class="content-section">
+                <div class="header">
+                    <h1 class="page-title">Analytics & Reports</h1>
+                    <div class="header-actions">
+                        <select class="form-control">
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                            <option>Last 6 months</option>
+                            <option>Last year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Revenue Trends</h2>
+                    </div>
+                    <div class="chart-container">
+                        <p>Revenue trend chart would be rendered here</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">User Growth</h2>
+                    </div>
+                    <div class="chart-container">
+                        <p>User growth chart would be rendered here</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Market Performance</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Market</th>
+                                    <th>Properties</th>
+                                    <th>Deals Closed</th>
+                                    <th>Avg Price</th>
+                                    <th>Revenue</th>
+                                    <th>Growth</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Atlanta, GA</strong></td>
+                                    <td>456</td>
+                                    <td>78</td>
+                                    <td>$165,000</td>
+                                    <td>$42,800</td>
+                                    <td><span class="stat-change positive">+15.2%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Birmingham, AL</strong></td>
+                                    <td>234</td>
+                                    <td>45</td>
+                                    <td>$125,000</td>
+                                    <td>$28,500</td>
+                                    <td><span class="stat-change positive">+8.7%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nashville, TN</strong></td>
+                                    <td>189</td>
+                                    <td>34</td>
+                                    <td>$185,000</td>
+                                    <td>$31,200</td>
+                                    <td><span class="stat-change negative">-2.1%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscriptions Section -->
+            <div id="subscriptions" class="content-section">
+                <div class="header">
+                    <h1 class="page-title">Subscription Management</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary">
+                            <span>📊</span>
+                            Revenue Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">MRR</span>
+                            <span class="stat-icon">💰</span>
+                        </div>
+                        <div class="stat-value">$127,430</div>
+                        <div class="stat-change positive">+12.5% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Churn Rate</span>
+                            <span class="stat-icon">📉</span>
+                        </div>
+                        <div class="stat-value">3.2%</div>
+                        <div class="stat-change negative">+0.5% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">LTV</span>
+                            <span class="stat-icon">📈</span>
+                        </div>
+                        <div class="stat-value">$2,840</div>
+                        <div class="stat-change positive">+8.3% from last month</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">Active Subscriptions</span>
+                            <span class="stat-icon">👥</span>
+                        </div>
+                        <div class="stat-value">2,456</div>
+                        <div class="stat-change positive">+5.7% from last month</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Subscription Breakdown</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Plan</th>
+                                    <th>Active Users</th>
+                                    <th>Monthly Revenue</th>
+                                    <th>Churn Rate</th>
+                                    <th>Avg LTV</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge badge-warning">Starter ($97)</span></td>
+                                    <td>1,234</td>
+                                    <td>$119,698</td>
+                                    <td>5.2%</td>
+                                    <td>$1,940</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-success">Professional ($197)</span></td>
+                                    <td>987</td>
+                                    <td>$194,439</td>
+                                    <td>2.8%</td>
+                                    <td>$3,940</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-info">Elite ($397)</span></td>
+                                    <td>235</td>
+                                    <td>$93,295</td>
+                                    <td>1.2%</td>
+                                    <td>$7,850</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="content-section">
+                <div class="header">
+                    <h1 class="page-title">System Settings</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Platform Configuration</h2>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label class="form-label">Platform Name</label>
+                            <input type="text" class="form-control" value="Wholesale2Flip">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Support Email</label>
+                            <input type="email" class="form-control" value="support@wholesale2flip.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Max Properties Per User</label>
+                            <input type="number" class="form-control" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Default Commission Rate (%)</label>
+                            <input type="number" class="form-control" value="4" step="0.1">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Email Templates</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Template</th>
+                                    <th>Subject</th>
+                                    <th>Last Modified</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Welcome Email</td>
+                                    <td>Welcome to Wholesale2Flip!</td>
+                                    <td>Jan 15, 2025</td>
+                                    <td><button class="btn btn-sm btn-secondary">Edit</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Property Match</td>
+                                    <td>New Property Match Found!</td>
+                                    <td>Jan 10, 2025</td>
+                                    <td><button class="btn btn-sm btn-secondary">Edit</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Deal Closed</td>
+                                    <td>Congratulations on Your Closed Deal!</td>
+                                    <td>Jan 8, 2025</td>
+                                    <td><button class="btn btn-sm btn-secondary">Edit</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New User</h2>
+                <button class="close" onclick="closeModal('addUserModal')">&times;</button>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subscription Plan</label>
+                    <select class="form-control" required>
+                        <option>Starter</option>
+                        <option>Professional</option>
+                        <option>Elite</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-control" required>
+                        <option>User</option>
+                        <option>Admin</option>
+                        <option>Super Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Property Modal -->
+    <div id="addPropertyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Property</h2>
+                <button class="close" onclick="closeModal('addPropertyModal')">&times;</button>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Property Address</label>
+                    <input type="text" class="form-control" placeholder="123 Main St, City, State ZIP" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Purchase Price</label>
+                    <input type="number" class="form-control" placeholder="125000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ARV (After Repair Value)</label>
+                    <input type="number" class="form-control" placeholder="185000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estimated Repairs</label>
+                    <input type="number" class="form-control" placeholder="35000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Property Type</label>
+                    <select class="form-control" required>
+                        <option>Single Family</option>
+                        <option>Multi Family</option>
+                        <option>Condo</option>
+                        <option>Townhouse</option>
+                        <option>Commercial</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Property</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Hide all content sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected content section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Modal functionality
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Form submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData);
+                
+                // Simulate API call
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.innerHTML = '<span class="loading"></span> Processing...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    alert('Operation completed successfully!');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Close modal if it's in one
+                    const modal = this.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                        this.reset();
+                    }
+                }, 2000);
+            });
+        });
+
+        // Search functionality
+        document.querySelectorAll('.search-box').forEach(searchBox => {
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const table = this.closest('.main-content').querySelector('table tbody');
+                
+                if (table) {
+                    Array.from(table.rows).forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(searchTerm) ? '' : 'none';
+                    });
+                }
+            });
+        });
+
+        // Filter functionality
+        document.querySelectorAll('select.form-control').forEach(select => {
+            select.addEventListener('change', function() {
+                // Implement filter logic here
+                console.log('Filter changed:', this.value);
+            });
+        });
+
+        // Real-time updates simulation
+        function simulateRealTimeUpdates() {
+            // Update stats periodically
+            setInterval(() => {
+                const statValues = document.querySelectorAll('.stat-value');
+                statValues.forEach(stat => {
+                    if (stat.textContent.includes(')) {
+                        const currentValue = parseInt(stat.textContent.replace(/[^0-9]/g, ''));
+                        const change = Math.floor(Math.random() * 1000) - 500;
+                        const newValue = Math.max(0, currentValue + change);
+                        stat.textContent = ' + newValue.toLocaleString();
+                    }
+                });
+            }, 30000); // Update every 30 seconds
+        }
+
+        // Initialize real-time updates
+        simulateRealTimeUpdates();
+
+        // Export functionality
+        function exportData(type) {
+            const data = [];
+            const table = document.querySelector('.content-section.active table');
+            
+            if (table) {
+                const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+                data.push(headers);
+                
+                Array.from(table.querySelectorAll('tbody tr')).forEach(row => {
+                    const rowData = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
+                    data.push(rowData);
+                });
+                
+                // Convert to CSV
+                const csv = data.map(row => row.join(',')).join('\n');
+                
+                // Download
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${type}_export_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        // Bulk actions
+        function selectAllCheckboxes() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = !checkbox.checked;
+            });
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                background: white;
+                border-left: 4px solid var(--${type === 'success' ? 'accent' : type === 'error' ? 'danger' : 'info'}-color);
+                box-shadow: var(--shadow-lg);
+                border-radius: 8px;
+                z-index: 2000;
+                max-width: 300px;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Activity monitoring
+        function trackUserActivity() {
+            let activityTimeout;
+            
+            function resetTimeout() {
+                clearTimeout(activityTimeout);
+                activityTimeout = setTimeout(() => {
+                    showNotification('Session will expire in 5 minutes due to inactivity', 'warning');
+                }, 25 * 60 * 1000); // 25 minutes
+            }
+            
+            ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+                document.addEventListener(event, resetTimeout, true);
+            });
+            
+            resetTimeout();
+        }
+
+        // Initialize activity tracking
+        trackUserActivity();
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + K for search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                const searchBox = document.querySelector('.content-section.active .search-box');
+                if (searchBox) {
+                    searchBox.focus();
+                }
+            }
+            
+            // Escape to close modals
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+
+        // Initialize tooltips and help text
+        function initializeTooltips() {
+            const tooltipElements = document.querySelectorAll('[data-tooltip]');
+            tooltipElements.forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = this.getAttribute('data-tooltip');
+                    tooltip.style.cssText = `
+                        position: absolute;
+                        background: var(--dark-color);
+                        color: white;
+                        padding: 0.5rem;
+                        border-radius: 4px;
+                        font-size: 0.75rem;
+                        z-index: 1000;
+                        pointer-events: none;
+                    `;
+                    document.body.appendChild(tooltip);
+                    
+                    // Position tooltip
+                    const rect = this.getBoundingClientRect();
+                    tooltip.style.left = rect.left + 'px';
+                    tooltip.style.top = (rect.bottom + 5) + 'px';
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    document.querySelectorAll('.tooltip').forEach(tooltip => tooltip.remove());
+                });
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTooltips();
+            showNotification('Admin dashboard loaded successfully', 'success');
+        });
+    </script>
+</body>
+</html>
