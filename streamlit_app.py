@@ -796,7 +796,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 with st.form("buyer_qualification_form"):
-    st.markdown("### 👤 Investor Profile")
+    st.markdown("### Investor Profile")
     col1, col2 = st.columns(2)
     
     with col1:
@@ -807,7 +807,7 @@ with st.form("buyer_qualification_form"):
         phone = st.text_input("Phone Number *", key="qual_phone")
         location = st.text_input("Primary Investment Markets *", placeholder="e.g., Atlanta, Birmingham, Memphis", key="qual_location")
     
-    st.markdown("### 🎯 Investment Strategy")
+    st.markdown("### Investment Strategy")
     st.markdown("What best describes your investment focus? (Select all that apply)")
     
     col1, col2, col3 = st.columns(3)
@@ -821,7 +821,7 @@ with st.form("buyer_qualification_form"):
         commercial = st.checkbox("Commercial Real Estate")
         wholesale = st.checkbox("Wholesale to Other Investors")
     
-    st.markdown("### 💰 Financial Capacity")
+    st.markdown("### Financial Capacity")
     col1, col2 = st.columns(2)
     
     with col1:
@@ -842,7 +842,7 @@ with st.form("buyer_qualification_form"):
             "Working on securing funds", "Not yet available"
         ])
     
-    st.markdown("### 📈 Experience Level")
+    st.markdown("### Experience Level")
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -861,19 +861,19 @@ with st.form("buyer_qualification_form"):
             "", "1-2 deals", "3-5 deals", "6-10 deals", "10+ deals"
         ])
     
-    st.markdown("### 📝 Additional Information")
+    st.markdown("### Additional Information")
     special_requirements = st.text_area("Special Requirements or Preferences",
                                       placeholder="e.g., specific neighborhoods, property types, renovation budget limits, etc.")
     
     col1, col2, col3 = st.columns(3)
     with col1:
-        newsletter = st.checkbox("📧 Subscribe to weekly deal alerts")
+        newsletter = st.checkbox("Subscribe to weekly deal alerts")
     with col2:
-        discord = st.checkbox("💬 Join our Discord community")
+        discord = st.checkbox("Join our Discord community")
     with col3:
-        mentorship = st.checkbox("🎓 Interested in mentorship program")
+        mentorship = st.checkbox("Interested in mentorship program")
     
-    submit_qualification = st.form_submit_button("🚀 Join Verified Buyer Network")
+    submit_qualification = st.form_submit_button("Join Verified Buyer Network")
     
     if submit_qualification:
         if name and email and phone and location:
@@ -932,8 +932,77 @@ with col1:
         <div class="plan-price">$97</div>
         <div class="plan-period">per month</div>
         <ul style="text-align: left; margin: 1rem 0; list-style: none;">
+                <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                Custom market analysis
+            </li>
             <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
                 <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                White-glove transaction support
+            </li>
+            <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+                <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                Mastermind group access
+            </li>
+            <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+                <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                API access for automation
+            </li>
+            <li style="display: flex; align-items: center; padding: 0.75rem 0;">
+                <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                Dedicated account manager
+            </li>
+        </ul>
+        <p style="margin-bottom: 2rem;"><strong>Perfect for:</strong><br>High-volume investors & teams</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Go Elite", key="elite"):
+        st.success("You've selected the Elite plan! Redirecting to secure checkout...")
+
+# Footer
+st.markdown("""
+<div class="footer">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem;">
+            <div>
+                <h3 style="margin-bottom: 1.5rem; background: var(--gradient-secondary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">Wholesale2Flip</h3>
+                <p>The premier platform for real estate wholesaling and investment. Connect with verified buyers, analyze deals instantly, and scale your business.</p>
+                <div style="margin-top: 1rem;">
+                    <p>Email: hello@wholesale2flip.com</p>
+                    <p>Phone: (555) 123-FLIP</p>
+                </div>
+            </div>
+            <div>
+                <h3 style="margin-bottom: 1.5rem; background: var(--gradient-secondary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">Platform</h3>
+                <p>• Features</p>
+                <p>• How It Works</p>
+                <p>• Pricing</p>
+                <p>• API Documentation</p>
+                <p>• Mobile App</p>
+            </div>
+            <div>
+                <h3 style="margin-bottom: 1.5rem; background: var(--gradient-secondary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">Resources</h3>
+                <p>• Learning Center</p>
+                <p>• Deal Calculator</p>
+                <p>• Market Reports</p>
+                <p>• Contract Templates</p>
+                <p>• Discord Community</p>
+            </div>
+            <div>
+                <h3 style="margin-bottom: 1.5rem; background: var(--gradient-secondary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">Support</h3>
+                <p>• Help Center</p>
+                <p>• Contact Support</p>
+                <p>• System Status</p>
+                <p>• Privacy Policy</p>
+                <p>• Terms of Service</p>
+            </div>
+        </div>
+        <div style="text-align: center; padding-top: 2rem; border-top: 1px solid #374151; color: #9ca3af;">
+            <p>&copy; 2025 Wholesale2Flip. All rights reserved. | Built for serious real estate investors.</p>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
                 Access to basic deal flow
             </li>
             <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
@@ -966,7 +1035,7 @@ with col1:
     """, unsafe_allow_html=True)
     
     if st.button("Start Free Trial", key="starter"):
-        st.success("🎉 You've selected the Starter plan! Redirecting to secure checkout...")
+        st.success("You've selected the Starter plan! Redirecting to secure checkout...")
 
 with col2:
     st.markdown("""
@@ -1017,7 +1086,7 @@ with col2:
     """, unsafe_allow_html=True)
     
     if st.button("Most Popular Choice", key="professional"):
-        st.success("🚀 You've selected the Professional plan! Redirecting to secure checkout...")
+        st.success("You've selected the Professional plan! Redirecting to secure checkout...")
 
 with col3:
     st.markdown("""
@@ -1044,6 +1113,31 @@ with col3:
             </li>
             <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
                 <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                Custom market analysis
+            </li>
+            <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+                <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                White-glove transaction support
+            </li>
+            <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+                <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                Mastermind group access
+            </li>
+            <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+                <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                API access for automation
+            </li>
+            <li style="display: flex; align-items: center; padding: 0.75rem 0;">
+                <div style="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
+                Dedicated account manager
+            </li>
+        </ul>
+        <p style="margin-bottom: 2rem;"><strong>Perfect for:</strong><br>High-volume investors & teams</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Go Elite", key="elite"):
+        st.success("You've selected the Elite plan! Redirecting to secure checkout...")="background: var(--accent-color); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 0.7rem; font-weight: bold;">✓</div>
                 Custom market analysis
             </li>
             <li style="display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
