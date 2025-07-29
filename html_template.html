@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wholesale2Flip - Master Real Estate Wholesaling & Flipping</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Wholesale2Flip</a>
+                <nav class="nav">
+                    <a href="#home">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#platform">Platform</a>
+                    <a href="#qualification">Join Network</a>
+                    <a href="#pricing">Pricing</a>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-secondary" onclick="openModal('loginModal')">Login</button>
+                    <button class="btn btn-primary" onclick="openModal('signupModal')">Start Free Trial</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Master Real Estate Wholesaling & Flipping</h1>
+                    <p class="subtitle">Connect with verified buyers, analyze deals instantly, and scale your real estate business with our AI-powered matching platform.</p>
+                    <div class="hero-buttons">
+                        <a href="#qualification" class="btn btn-accent">Join Buyer Network</a>
+                        <a href="#platform" class="btn btn-secondary">Explore Platform</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">15K+</span>
+                        <span class="stat-label">Active Investors</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">$2.8B</span>
+                        <span class="stat-label">Deals Closed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">47%</span>
+                        <span class="stat-label">Avg ROI</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">72hrs</span>
+                        <span class="stat-label">Avg Close Time</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2>Why Choose Wholesale2Flip?</h2>
+                <p class="subtitle">Advanced tools and verified networks to accelerate your real estate success</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>AI-Powered Deal Matching</h3>
+                        <p>Our proprietary algorithm analyzes market data and investor preferences to match properties with the perfect buyers in real-time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <h3>Verified Cash Buyers</h3>
+                        <p>Access to over 15,000 pre-qualified cash buyers, fix-and-flip investors, and rental property buyers with proof of funds.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Instant Deal Analysis</h3>
+                        <p>Advanced calculators for ARV, repair costs, profit margins, and ROI with real-time market comparables and rental estimates.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏠</div>
+                        <h3>Off-Market Properties</h3>
+                        <p>Exclusive access to distressed properties, foreclosures, and motivated seller leads before they hit the MLS.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Mobile Deal Management</h3>
+                        <p>Manage your entire pipeline on-the-go with our mobile app featuring contract templates and e-signature integration.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Discord Integration</h3>
+                        <p>Seamlessly connect with our Discord community for live deal discussions, mentorship, and instant buyer notifications.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="platform" class="platform">
+            <div class="container">
+                <div class="platform-content">
+                    <div class="platform-text">
+                        <h2>Professional-Grade Platform</h2>
+                        <p>Built by wholesalers, for wholesalers. Our platform combines cutting-edge technology with real-world experience to give you the competitive edge.</p>
+                        <ul class="platform-features">
+                            <li>Real-time property alerts & notifications</li>
+                            <li>Automated buyer matching system</li>
+                            <li>Advanced deal analysis & reporting</li>
+                            <li>Contract management & e-signatures</li>
+                            <li>CRM with lead tracking & follow-up</li>
+                            <li>Market analytics & trend insights</li>
+                            <li>Team collaboration tools</li>
+                            <li>API integrations with major platforms</li>
+                        </ul>
+                        <a href="#qualification" class="btn btn-primary">Get Started Today</a>
+                    </div>
+                    <div class="platform-demo">
+                        <h3>Live Platform Demo</h3>
+                        <p>See how our AI matches your property with qualified buyers in seconds</p>
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 10px; padding: 2rem; margin: 1rem 0;">
+                            <p><strong>Demo Property:</strong> 123 Main St, Atlanta, GA</p>
+                            <p><strong>ARV:</strong> $185,000 | <strong>Repair:</strong> $35,000</p>
+                            <p><strong>Your Price:</strong> $120,000</p>
+                            <div style="margin: 1rem 0; padding: 1rem; background: rgba(16, 185, 129, 0.2); border-radius: 8px;">
+                                <strong>✓ 3 Qualified Buyers Found!</strong><br>
+                                • Fix & Flip Investor (Atlanta Metro)<br>
+                                • Rental Portfolio Builder<br>
+                                • Cash Buyer Network
+                            </div>
+                        </div>
+                        <button class="btn btn-accent">Watch Full Demo</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="qualification" class="qualification">
+            <div class="container">
+                <h2>Join Our Verified Buyer Network</h2>
+                <p class="subtitle" style="text-align: center; margin-bottom: 3rem;">Get exclusive access to deals that match your investment criteria</p>
+                
+                <form class="qualification-form" id="buyerQualificationForm">
+                    <div class="form-section">
+                        <h3>Investor Profile</h3>
+                        <div class="form-group">
+                            <label for="investorName">Full Name *</label>
+                            <input type="text" id="investorName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investorEmail">Email Address *</label>
+                            <input type="email" id="investorEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investorPhone">Phone Number *</label>
+                            <input type="tel" id="investorPhone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investorLocation">Primary Investment Markets *</label>
+                            <input type="text" id="investorLocation" name="location" placeholder="e.g., Atlanta, Birmingham, Memphis" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Investment Strategy</h3>
+                        <label>What best describes your investment focus? (Select all that apply)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fixFlip" name="strategy" value="fix-flip">
+                                <label for="fixFlip">Fix & Flip Properties</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="rental" name="strategy" value="rental">
+                                <label for="rental">Buy & Hold Rentals</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="section8" name="strategy" value="section8">
+                                <label for="section8">Section 8 / Low-Income Housing</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="luxury" name="strategy" value="luxury">
+                                <label for="luxury">High-End Properties ($400K+)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="commercial" name="strategy" value="commercial">
+                                <label for="commercial">Commercial Real Estate</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="wholesale" name="strategy" value="wholesale">
+                                <label for="wholesale">Wholesale to Other Investors</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Financial Capacity</h3>
+                        <div class="form-group">
+                            <label for="budgetMin">Minimum Purchase Price</label>
+                            <select id="budgetMin" name="budgetMin" required>
+                                <option value="">Select minimum budget</option>
+                                <option value="25000">$25,000</option>
+                                <option value="50000">$50,000</option>
+                                <option value="75000">$75,000</option>
+                                <option value="100000">$100,000</option>
+                                <option value="150000">$150,000</option>
+                                <option value="200000">$200,000+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budgetMax">Maximum Purchase Price</label>
+                            <select id="budgetMax" name="budgetMax" required>
+                                <option value="">Select maximum budget</option>
+                                <option value="100000">$100,000</option>
+                                <option value="200000">$200,000</option>
+                                <option value="300000">$300,000</option>
+                                <option value="500000">$500,000</option>
+                                <option value="750000">$750,000</option>
+                                <option value="1000000">$1,000,000+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="fundingType">Funding Method</label>
+                            <select id="fundingType" name="fundingType" required>
+                                <option value="">Select funding type</option>
+                                <option value="cash">Cash Only</option>
+                                <option value="conventional">Conventional Financing</option>
+                                <option value="hard-money">Hard Money Lenders</option>
+                                <option value="private">Private Lenders</option>
+                                <option value="creative">Creative Financing</option>
+                                <option value="combination">Combination of Methods</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="proofOfFunds">Proof of Funds Available?</label>
+                            <select id="proofOfFunds" name="proofOfFunds" required>
+                                <option value="">Select option</option>
+                                <option value="yes">Yes - Can provide immediately</option>
+                                <option value="pre-approval">Have pre-approval letter</option>
+                                <option value="working-on-it">Working on securing funds</option>
+                                <option value="no">Not yet available</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Experience Level</h3>
+                        <div class="form-group">
+                            <label for="experience">Real Estate Investment Experience</label>
+                            <select id="experience" name="experience" required>
+                                <option value="">Select experience level</option>
+                                <option value="beginner">Beginner (0-2 deals)</option>
+                                <option value="intermediate">Intermediate (3-10 deals)</option>
+                                <option value="experienced">Experienced (11-25 deals)</option>
+                                <option value="expert">Expert (25+ deals)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="timeline">How quickly can you close?</label>
+                            <select id="timeline" name="timeline" required>
+                                <option value="">Select timeline</option>
+                                <option value="7-days">7 days or less</option>
+                                <option value="14-days">14 days</option>
+                                <option value="21-days">21 days</option>
+                                <option value="30-days">30 days</option>
+                                <option value="45-days">45+ days</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="monthlyDeals">How many deals do you want per month?</label>
+                            <select id="monthlyDeals" name="monthlyDeals" required>
+                                <option value="">Select volume</option>
+                                <option value="1">1-2 deals</option>
+                                <option value="3">3-5 deals</option>
+                                <option value="6">6-10 deals</option>
+                                <option value="10">10+ deals</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Additional Information</h3>
+                        <div class="form-group">
+                            <label for="specialRequirements">Special Requirements or Preferences</label>
+                            <textarea id="specialRequirements" name="specialRequirements" rows="4" placeholder="e.g., specific neighborhoods, property types, renovation budget limits, etc."></textarea>
+                        </div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="newsletter" name="newsletter" value="yes">
+                                <label for="newsletter">Subscribe to weekly deal alerts</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="discord" name="discord" value="yes">
+                                <label for="discord">Join our Discord community</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="mentorship" name="mentorship" value="yes">
+                                <label for="mentorship">Interested in mentorship program</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                <p style="text-align: center; margin-top: 1rem;">
+                    <a href="#" style="color: var(--primary-color);">Forgot your password?</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2 style="margin-bottom: 2rem; text-align: center;">Start Your Free Trial</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Create Password</label>
+                    <input type="password" id="signupPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Start Free Trial</button>
+                <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #6b7280;">
+                    By signing up, you agree to our Terms of Service and Privacy Policy
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>="btn btn-primary" style="width: 100%; font-size: 1.2rem; padding: 1.5rem;">
+                        Join Verified Buyer Network
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section id="pricing" class="pricing">
+            <div class="container">
+                <h2>Choose Your Growth Plan</h2>
+                <p class="subtitle" style="text-align: center; margin-bottom: 4rem;">Scale your real estate business with the right tools and support</p>
+                
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="plan-name">Starter</div>
+                        <div class="plan-price">$97</div>
+                        <div class="plan-period">per month</div>
+                        <ul class="plan-features">
+                            <li>Access to basic deal flow</li>
+                            <li>Standard buyer database (5K+ buyers)</li>
+                            <li>Basic deal analysis tools</li>
+                            <li>Email support</li>
+                            <li>Monthly market reports</li>
+                            <li>Discord community access</li>
+                            <li>Mobile app access</li>
+                        </ul>
+                        <p style="margin-bottom: 2rem;"><strong>Perfect for:</strong><br>New investors getting started</p>
+                        <button class="btn btn-secondary" onclick="selectPlan('starter')">Start Free Trial</button>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <div class="plan-name">Professional</div>
+                        <div class="plan-price">$197</div>
+                        <div class="plan-period">per month</div>
+                        <ul class="plan-features">
+                            <li>Everything in Starter</li>
+                            <li>Premium buyer network (15K+ buyers)</li>
+                            <li>AI-powered deal matching</li>
+                            <li>Advanced analytics & reporting</li>
+                            <li>Priority deal notifications</li>
+                            <li>Live training sessions (weekly)</li>
+                            <li>Contract templates & e-signatures</li>
+                            <li>Phone support</li>
+                            <li>CRM & lead management</li>
+                        </ul>
+                        <p style="margin-bottom: 2rem;"><strong>Perfect for:</strong><br>Active investors ready to scale</p>
+                        <button class="btn btn-primary" onclick="selectPlan('professional')">Most Popular</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <div class="plan-name">Elite</div>
+                        <div class="plan-price">$397</div>
+                        <div class="plan-period">per month</div>
+                        <ul class="plan-features">
+                            <li>Everything in Professional</li>
+                            <li>Exclusive off-market deals</li>
+                            <li>Personal deal coach</li>
+                            <li>Direct lender connections</li>
+                            <li>Custom market analysis</li>
+                            <li>White-glove transaction support</li>
+                            <li>Mastermind group access</li>
+                            <li>API access for automation</li>
+                            <li>Dedicated account manager</li>
+                        </ul>
+                        <p style="margin-bottom: 2rem;"><strong>Perfect for:</strong><br>High-volume investors & teams</p>
+                        <button class="btn btn-accent" onclick="selectPlan('elite')">Go Elite</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Wholesale2Flip</h3>
+                    <p>The premier platform for real estate wholesaling and investment. Connect with verified buyers, analyze deals instantly, and scale your business.</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="#" style="margin-right: 1rem;">📧 hello@wholesale2flip.com</a><br>
+                        <a href="#">📞 (555) 123-FLIP</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#platform">How It Works</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Mobile App</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Learning Center</a></li>
+                        <li><a href="#">Deal Calculator</a></li>
+                        <li><a href="#">Market Reports</a></li>
+                        <li><a href="#">Contract Templates</a></li>
+                        <li><a href="#">Discord Community</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#">System Status</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wholesale2Flip. All rights reserved. | Built for serious real estate investors.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2 style="margin-bottom: 2rem; text-align: center;">Welcome Back</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class
