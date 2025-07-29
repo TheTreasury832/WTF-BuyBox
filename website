@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyBox - PRO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #7c3aed, #a855f7);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text .pro {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .beta {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            margin-top: -5px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            color: #9ca3af;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            color: #7c3aed;
+            text-decoration: underline;
+        }
+
+        .nav-item.leads {
+            color: #f59e0b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-item.leads::before {
+            content: "⚡";
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            background: #7c3aed;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Home Page Styles */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml,<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="neonGlow" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23fbbf24;stop-opacity:0.8"/><stop offset="50%" style="stop-color:%2310b981;stop-opacity:0.6"/><stop offset="100%" style="stop-color:%237c3aed;stop-opacity:0.4"/></linearGradient></defs><rect width="1200" height="800" fill="url(%23neonGlow)" opacity="0.1"/><path d="M200,400 Q400,200 600,400 T1000,400" stroke="%23fbbf24" stroke-width="3" fill="none" opacity="0.6"/><path d="M150,500 Q350,300 550,500 T950,500" stroke="%2310b981" stroke-width="2" fill="none" opacity="0.5"/></svg>');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fbbf24, #10b981, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            margin-bottom: 2rem;
+        }
+
+        .address-search {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7c3aed;
+        }
+
+        /* BuyBoxes Page Styles */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #374151;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #7c3aed;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .buyer-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: #7c3aed;
+            border-color: #7c3aed;
+        }
+
+        .states-list {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #7c3aed;
+            border-radius: 15px;
+            padding: 1rem;
+        }
+
+        .state-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .state-item:hover {
+            background: rgba(124, 58, 237, 0.2);
+        }
+
+        .state-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Pipeline Page Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-info h3 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-info p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.home {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .stat-icon.search {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .stat-icon.heart {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #9ca3af;
+        }
+
+        .empty-state h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Tutorials Page Styles */
+        .tutorial-section {
+            margin-bottom: 3rem;
+        }
+
+        .tutorial-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .tutorial-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .tutorial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tutorial-video {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(45deg, #1f2937, #374151);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .tutorial-content {
+            padding: 1.5rem;
+        }
+
+        .tutorial-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tutorial-content p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        .coming-soon {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px dashed #fbbf24;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fbbf24;
+        }
+
+        .coming-soon-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .coming-soon h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .coming-soon p {
+            color: #9ca3af;
+        }
+
+        /* Profile Page Styles */
+        .profile-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-tab {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .profile-tab.active {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .profile-tab:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+        }
+
+        .profile-form {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #7c3aed;
+        }
+
+        .form-group input::placeholder {
+            color: #9ca3af;
+        }
+
+        .save-btn {
+            background: linear-gradient(45deg, #7c3aed, #a855f7);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Lightning Leads Page Styles */
+        .leads-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .leads-card {
+            background: rgba(124, 58, 237, 0.2);
+            border: 2px solid #7c3aed;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .leads-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .leads-header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .leads-subtitle {
+            color: #9ca3af;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .leads-video {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .signup-section {
+            margin-top: 2rem;
+        }
+
+        .signup-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .signup-section p {
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-btn {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .price-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tutorial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Hidden class for page switching */
+        .hidden {
+            display: none;
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Interactive elements */
+        .clickable {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .clickable:hover {
+            transform: translateY(-2px);
+        }
+
+        .clickable:active {
+            transform: translateY(0);
+        }
+
+        /* Prevent text selection on interactive elements */
+        .nav-item, .tab-btn, .profile-tab, .state-item, .tutorial-card, button {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* Enhanced button styles */
+        button, .btn {
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:focus, .btn:focus {
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
+        }
+
+        /* Enhanced form styles */
+        input:focus {
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
+        }
+
+        /* Smooth page transitions */
+        .page {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Address Results Modal */
+        .address-results-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .address-results-modal .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border-radius: 20px;
+            padding: 0;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid #7c3aed;
+        }
+
+        .modal-header {
+            background: rgba(124, 58, 237, 0.2);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 18px 18px 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            font-size: 2rem;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .property-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-card h3 {
+            margin-bottom: 1rem;
+            color: #7c3aed;
+            font-size: 1.1rem;
+        }
+
+        .info-card p {
+            margin-bottom: 0.5rem;
+            color: #e5e7eb;
+        }
+
+        .info-card strong {
+            color: white;
+        }
+
+        .grade-a {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .buyer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .buyer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 8px;
+        }
+
+        .buyer-type {
+            color: white;
+            font-weight: 500;
+        }
+
+        .buyer-count {
+            background: #7c3aed;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #7c3aed, #a855f7);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Error, Success, and Loading Modal Styles */
+        .error-modal, .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .error-content, .success-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 2px solid #ef4444;
+        }
+
+        .success-content {
+            border-color: #10b981;
+        }
+
+        .error-icon, .success-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .error-content h3, .success-content h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .error-content p, .success-content p {
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-close-btn, .success-close-btn {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .loading-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .loading-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            border: 2px solid #7c3aed;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(124, 58, 237, 0.3);
+            border-top: 4px solid #7c3aed;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* State Results Modal */
+        .state-results-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .state-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            background: rgba(124, 58, 237, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2rem;
+            color: #7c3aed;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Notification Modal Styles */
+        .notification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .notification-item:hover {
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content p {
+            color: white;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .notification-time {
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* Console Error Fixes */
+        .no-console-errors {
+            /* Suppress any remaining console warnings */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Performance optimizations */
+        * {
+            will-change: auto;
+            transform: translateZ(0);
+        }
+
+        .modal-content, .notification-modal .modal-content, .address-results-modal .modal-content {
+            backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Focus management */
+        .modal-content:focus {
+            outline: 2px solid #7c3aed;
+            outline-offset: 2px;
+        }
+
+        /* Better mobile experience */
+        @media (max-width: 768px) {
+            .address-results-modal .modal-content,
+            .notification-modal .modal-content,
+            .state-results-modal .modal-content {
+                width: 95%;
+                margin: 1rem;
+                max-height: 95vh;
+            }
+            
+            .property-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .state-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        .tutorial-card:not(.coming-soon):hover {
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .state-item:hover {
+            background: rgba(124, 58, 237, 0.3);
+            border-left: 4px solid #7c3aed;
+            padding-left: calc(1rem - 4px);
+        }
+
+        /* Notification badge */
+        .notification-btn {
+            position: relative;
+        }
+
+        .notification-btn::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: none;
+        }
+
+        .notification-btn.has-notifications::after {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">📦</div>
+            <div class="logo-text">
+                <div class="pro">PRO</div>
+                <div class="beta">BETA</div>
+            </div>
+        </div>
+        
+        <nav class="nav">
+            <span class="nav-item" data-page="home">Home</span>
+            <span class="nav-item" data-page="buyboxes">BuyBoxes</span>
+            <span class="nav-item" data-page="pipeline">Pipeline</span>
+            <span class="nav-item" data-page="tutorials">Tutorials</span>
+            <span class="nav-item" data-page="profile">Profile</span>
+            <span class="nav-item leads" data-page="leads">Leads</span>
+        </nav>
+        
+        <div class="header-right">
+            <button class="notification-btn">🔔</button>
+            <button class="logout-btn">
+                🚪 Log Out
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="home" class="page">
+            <section class="hero-section">
+                <div class="hero-bg"></div>
+                <h1 class="hero-title">Pop In Your Address</h1>
+                <p class="hero-subtitle">Let's find you a buyer</p>
+                
+                <div class="address-search">
+                    <div class="search-icon">🔍</div>
+                    <input type="text" class="search-input" placeholder="Enter address...">
+                </div>
+            </section>
+        </div>
+
+        <!-- BuyBoxes Page -->
+        <div id="buyboxes" class="page hidden">
+            <div class="page-header">
+                <h1>BuyBoxes</h1>
+                <div class="view-toggle">
+                    <span>Map View</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span>List View</span>
+                </div>
+            </div>
+
+            <div class="buyer-tabs">
+                <button class="tab-btn active">Fix & Flip Buyers</button>
+                <button class="tab-btn">Creative Buyers</button>
+                <button class="tab-btn">Section 8 Buyers</button>
+            </div>
+
+            <div class="states-list">
+                <div class="state-item">ALABAMA</div>
+                <div class="state-item">ARIZONA</div>
+                <div class="state-item">COLORADO</div>
+                <div class="state-item">DELAWARE</div>
+                <div class="state-item">FLORIDA</div>
+                <div class="state-item">GEORGIA</div>
+                <div class="state-item">IDAHO</div>
+                <div class="state-item">INDIANA</div>
+            </div>
+        </div>
+
+        <!-- Pipeline Page -->
+        <div id="pipeline" class="page hidden">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>0</h3>
+                        <p>Total Properties</p>
+                    </div>
+                    <div class="stat-icon home">🏠</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>0</h3>
+                        <p>Properties waiting for dispo</p>
+                    </div>
+                    <div class="stat-icon search">🔍</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>0</h3>
+                        <p>Properties submitted for dispo</p>
+                    </div>
+                    <div class="stat-icon heart">💜</div>
+                </div>
+            </div>
+
+            <div class="empty-state">
+                <h2>No pipeline available</h2>
+            </div>
+        </div>
+
+        <!-- Tutorials Page -->
+        <div id="tutorials" class="page hidden">
+            <div class="tutorial-section">
+                <h2>1. Getting Started</h2>
+                <div class="tutorial-grid">
+                    <div class="tutorial-card coming-soon">
+                        <div class="coming-soon-icon">⚡</div>
+                        <h3>COMING SOON</h3>
+                        <p>In Development</p>
+                        <div style="margin-top: 1rem;">
+                            <h4>How Buy Box Cartel works</h4>
+                            <p style="margin-top: 0.5rem;">Learn about how Buy Box Cartel makes wholesaling extremely easy for beginners</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tutorial-card">
+                        <div class="tutorial-video">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <div class="tutorial-content">
+                            <h3>How Wholesaling Works</h3>
+                            <p>How you can make money with Buy Box Cartel</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutorial-section">
+                <h2>2. How To Submit Deals</h2>
+                <div class="tutorial-grid">
+                    <div class="tutorial-card">
+                        <div class="tutorial-video">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <div class="tutorial-content">
+                            <h3>Deal Submission Process</h3>
+                            <p>Learn how to properly submit your deals for maximum success</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tutorial-card coming-soon">
+                        <div class="coming-soon-icon">⚡</div>
+                        <h3>COMING SOON</h3>
+                        <p>In Development</p>
+                    </div>
+                    
+                    <div class="tutorial-card coming-soon">
+                        <div class="coming-soon-icon">⚡</div>
+                        <h3>COMING SOON</h3>
+                        <p>In Development</p>
+                    </div>
+                    
+                    <div class="tutorial-card coming-soon">
+                        <div class="coming-soon-icon">⚡</div>
+                        <h3>COMING SOON</h3>
+                        <p>In Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile" class="page hidden">
+            <div class="profile-tabs">
+                <button class="profile-tab active">My Account</button>
+                <button class="profile-tab">Subscription</button>
+            </div>
+
+            <div class="profile-form">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" value="james">
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" value="edgar">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="thetreasury@jbhousinginvestments.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="businessName">Business Name</label>
+                    <input type="text" id="businessName" placeholder="Business Name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" placeholder="Phone Number">
+                </div>
+                
+                <button class="save-btn">Save Changes</button>
+            </div>
+        </div>
+
+        <!-- Lightning Leads Page -->
+        <div id="leads" class="page hidden">
+            <div class="leads-container">
+                <div class="leads-card">
+                    <div class="leads-header">
+                        <span>⚡</span>
+                        <h1>Lightning Leads</h1>
+                    </div>
+                    <p class="leads-subtitle">How do Lightning Leads Work?</p>
+                    
+                    <div class="leads-video">
+                        <div class="coming-soon-icon">⚡</div>
+                        <h3>COMING SOON</h3>
+                        <p>In Development</p>
+                    </div>
+
+                    <div class="signup-section">
+                        <h2>Sign up for Lightning Leads</h2>
+                        <p>to get unlimited access to premium on market leads</p>
+                        <button class="price-btn">$39.99 /Month</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Page Navigation System - Fixed
+        function showPage(pageId) {
+            console.log(`Switching to page: ${pageId}`);
+            
+            // Hide all pages
+            const allPages = document.querySelectorAll('.page');
+            allPages.forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                console.log(`Successfully showed page: ${pageId}`);
+            } else {
+                console.error(`Page not found: ${pageId}`);
+            }
+            
+            // Update nav active state
+            const allNavItems = document.querySelectorAll('.nav-item');
+            allNavItems.forEach(item => item.classList.remove('active'));
+            
+            const activeNav = document.querySelector(`[data-page="${pageId}"]`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+        }
+
+        // Initialize navigation after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNavigation();
+        });
+
+        function initializeNavigation() {
+            const navItems = document.querySelectorAll('.nav-item');
+            console.log(`Found ${navItems.length} navigation items`);
+            
+            navItems.forEach((item, index) => {
+                const pageId = item.getAttribute('data-page');
+                console.log(`Setting up nav item ${index}: ${pageId}`);
+                
+                item.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log(`Nav clicked: ${pageId}`);
+                    showPage(pageId);
+                    return false;
+                };
+                
+                // Also add mousedown for immediate feedback
+                item.onmousedown = function(e) {
+                    e.preventDefault();
+                    return false;
+                };
+            });
+            
+            // Set initial page
+            showPage('home');
+        }
+
+        // If DOM is already loaded, initialize immediately
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeNavigation);
+        } else {
+            initializeNavigation();
+        }
+
+        // Initialize all functionality when page loads
+        function initializeApp() {
+            console.log('Initializing BuyBox Cartel App...');
+            
+            initializeNavigation();
+            initializeAddressSearch();
+            initializeOtherFeatures();
+        }
+
+        function initializeOtherFeatures() {
+            // Add direct click listeners with proper event handling
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.onclick = function() {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    console.log(`Tab switched to: ${this.textContent}`);
+                    return false;
+                };
+            });
+
+            // Profile Tab Functionality
+            const profileTabs = document.querySelectorAll('.profile-tab');
+            profileTabs.forEach(tab => {
+                tab.onclick = function() {
+                    profileTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    console.log(`Profile tab switched to: ${this.textContent}`);
+                    return false;
+                };
+            });
+
+            // Tutorial Video Play Functionality
+            const playBtns = document.querySelectorAll('.play-btn');
+            playBtns.forEach(btn => {
+                btn.onclick = function() {
+                    const tutorialTitle = this.closest('.tutorial-card').querySelector('h3').textContent;
+                    showSuccessMessage(`Opening video: ${tutorialTitle}`);
+                    return false;
+                };
+            });
+
+            // Lightning Leads Signup
+            const priceBtn = document.querySelector('.price-btn');
+            if (priceBtn) {
+                priceBtn.onclick = async function() {
+                    try {
+                        showLoadingMessage('Processing subscription...');
+                        
+                        // Simulate payment processing
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        
+                        hideLoadingMessage();
+                        showSuccessMessage('Lightning Leads subscription activated! You now have access to premium leads.');
+                        
+                    } catch (error) {
+                        hideLoadingMessage();
+                        showErrorMessage('Payment processing failed. Please try again.');
+                    }
+                    return false;
+                };
+            }
+
+            // Logout functionality
+            const logoutBtn = document.querySelector('.logout-btn');
+            if (logoutBtn) {
+                logoutBtn.onclick = function() {
+                    if (confirm('Are you sure you want to log out?')) {
+                        showLoadingMessage('Logging out...');
+                        setTimeout(() => {
+                            hideLoadingMessage();
+                            showSuccessMessage('Successfully logged out. Redirecting to login page...');
+                        }, 1000);
+                    }
+                    return false;
+                };
+            }
+
+            // Notification functionality
+            const notificationBtn = document.querySelector('.notification-btn');
+            if (notificationBtn) {
+                notificationBtn.onclick = function() {
+                    showNotificationPanel();
+                    return false;
+                };
+            }
+
+            // Form save functionality with validation
+            const saveBtn = document.querySelector('.save-btn');
+            if (saveBtn) {
+                saveBtn.onclick = async function(e) {
+                    e.preventDefault();
+                    
+                    try {
+                        const firstName = document.getElementById('firstName').value.trim();
+                        const lastName = document.getElementById('lastName').value.trim();
+                        const email = document.getElementById('email').value.trim();
+                        
+                        // Basic validation
+                        if (!firstName || !lastName || !email) {
+                            showErrorMessage('Please fill in all required fields.');
+                            return false;
+                        }
+                        
+                        if (!email.includes('@')) {
+                            showErrorMessage('Please enter a valid email address.');
+                            return false;
+                        }
+                        
+                        showLoadingMessage('Saving profile...');
+                        
+                        // Simulate API call
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        
+                        // Update API user data
+                        api.userData.firstName = firstName;
+                        api.userData.lastName = lastName;
+                        api.userData.email = email;
+                        api.userData.businessName = document.getElementById('businessName').value.trim();
+                        api.userData.phone = document.getElementById('phone').value.trim();
+                        
+                        hideLoadingMessage();
+                        showSuccessMessage('Profile updated successfully!');
+                        
+                    } catch (error) {
+                        hideLoadingMessage();
+                        showErrorMessage('Failed to save profile. Please try again.');
+                    }
+                    
+                    return false;
+                };
+            }
+
+            // Initialize state selection
+            initializeStateSelection();
+
+            // View toggle functionality
+            const viewToggle = document.querySelector('.toggle-switch input');
+            if (viewToggle) {
+                viewToggle.onchange = function(e) {
+                    const isListView = e.target.checked;
+                    const viewType = isListView ? 'List View' : 'Map View';
+                    showSuccessMessage(`Switched to ${viewType}`);
+                    console.log(`Switched to ${viewType}`);
+                };
+            }
+
+            // Tutorial card interactions
+            const tutorialCards = document.querySelectorAll('.tutorial-card:not(.coming-soon)');
+            tutorialCards.forEach(card => {
+                card.onclick = function() {
+                    const title = this.querySelector('h3').textContent;
+                    showSuccessMessage(`Opening tutorial: ${title}`);
+                    return false;
+                };
+            });
+            
+            console.log('All features initialized successfully!');
+        }
+
+        function showNotificationPanel() {
+            const notifications = [
+                { id: 1, type: 'deal', message: 'New property match found in Dallas, TX', time: '2 minutes ago' },
+                { id: 2, type: 'buyer', message: '3 new buyers joined your network', time: '1 hour ago' },
+                { id: 3, type: 'system', message: 'Your Lightning Leads subscription is active', time: '1 day ago' }
+            ];
+            
+            const modal = document.createElement('div');
+            modal.className = 'notification-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>🔔 Notifications</h2>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="notification-list">
+                            ${notifications.map(notif => `
+                                <div class="notification-item ${notif.type}">
+                                    <div class="notification-icon">
+                                        ${notif.type === 'deal' ? '🏠' : notif.type === 'buyer' ? '👥' : '⚙️'}
+                                    </div>
+                                    <div class="notification-content">
+                                        <p>${notif.message}</p>
+                                        <span class="notification-time">${notif.time}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn-secondary" onclick="markAllRead()">Mark All Read</button>
+                            <button class="btn-primary" onclick="viewAllNotifications()">View All</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            const closeBtn = modal.querySelector('.close-modal');
+            closeBtn.onclick = function() {
+                document.body.removeChild(modal);
+            };
+            
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            };
+        }
+
+        window.markAllRead = function() {
+            showSuccessMessage('All notifications marked as read');
+            const modal = document.querySelector('.notification-modal');
+            if (modal) modal.remove();
+        };
+
+        window.viewAllNotifications = function() {
+            showSuccessMessage('Opening full notification center...');
+            const modal = document.querySelector('.notification-modal');
+            if (modal) modal.remove();
+        };
+
+        // Auto-refresh authentication token
+        setInterval(async () => {
+            try {
+                await api.refreshAuth();
+                console.log('Authentication token refreshed');
+            } catch (error) {
+                console.log('Token refresh handled silently');
+            }
+        }, 300000); // Refresh every 5 minutes
+
+        // Start the app when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
