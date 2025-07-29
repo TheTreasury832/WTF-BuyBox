@@ -1,0 +1,283 @@
+# v1-free/Dockerfile
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    software-properties-common \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip3 install -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Expose port
+EXPOSE 8501
+
+# Health check
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+
+# Run the application
+CMD ["streamlit", "run", "app_v1.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+---
+
+# pro/Dockerfile
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    software-properties-common \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip3 install -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Expose port
+EXPOSE 8501
+
+# Health check
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+
+# Run the application
+CMD ["streamlit", "run", "app_pro.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+---
+
+# docker-compose.yml (Root directory)
+version: '3.8'
+
+services:
+  wholesale2flip-v1:
+    build:
+      context: ./v1-free
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    volumes:
+      - ./v1-free/.streamlit:/app/.streamlit:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - wholesale2flip
+
+  wholesale2flip-pro:
+    build:
+      context: ./pro
+      dockerfile: Dockerfile
+    ports:
+      - "8502:8501"
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    volumes:
+      - ./pro/.streamlit:/app/.streamlit:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - wholesale2flip
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - wholesale2flip-v1
+      - wholesale2flip-pro
+    restart: unless-stopped
+    networks:
+      - wholesale2flip
+
+networks:
+  wholesale2flip:
+    driver: bridge
+
+---
+
+# nginx.conf (Root directory)
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream v1_backend {
+        server wholesale2flip-v1:8501;
+    }
+
+    upstream pro_backend {
+        server wholesale2flip-pro:8501;
+    }
+
+    # V1 FREE subdomain
+    server {
+        listen 80;
+        server_name v1.wholesale2flipcartel.com;
+
+        location / {
+            proxy_pass http://v1_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            
+            # WebSocket support
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+    }
+
+    # PRO subdomain
+    server {
+        listen 80;
+        server_name pro.wholesale2flipcartel.com;
+
+        location / {
+            proxy_pass http://pro_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            
+            # WebSocket support
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+    }
+
+    # Main domain redirect
+    server {
+        listen 80;
+        server_name wholesale2flipcartel.com www.wholesale2flipcartel.com;
+        return 301 https://v1.wholesale2flipcartel.com$request_uri;
+    }
+}
+
+---
+
+# .dockerignore (Root directory)
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+docs/
+*.md
+
+# Development
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Secrets (keep these secure!)
+.streamlit/secrets.toml
+.env
+*.key
+*.pem
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node modules (if any)
+node_modules/
+
+# IDE
+*.sublime-*
+.vscode/settings.json

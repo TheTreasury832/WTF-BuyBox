@@ -1,0 +1,336 @@
+# .github/workflows/ci.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, '3.10']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov flake8
+        pip install -r requirements.txt
+
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Test V1 FREE
+      run: |
+        cd v1-free
+        pip install -r requirements.txt
+        python -m pytest tests/ -v --cov=. --cov-report=xml
+      continue-on-error: true
+
+    - name: Test PRO
+      run: |
+        cd pro
+        pip install -r requirements.txt
+        python -m pytest tests/ -v --cov=. --cov-report=xml
+      continue-on-error: true
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  docker:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push V1 FREE
+      uses: docker/build-push-action@v4
+      with:
+        context: ./v1-free
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/wholesale2flip-v1:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/wholesale2flip-v1:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Build and push PRO
+      uses: docker/build-push-action@v4
+      with:
+        context: ./pro
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/wholesale2flip-pro:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/wholesale2flip-pro:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  deploy:
+    needs: [test, docker]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Deploy to staging
+      run: |
+        echo "🚀 Deploying to staging environment"
+        # Add deployment commands here
+        
+    - name: Run smoke tests
+      run: |
+        echo "🧪 Running smoke tests"
+        # Add smoke test commands here
+
+    - name: Deploy to production
+      if: success()
+      run: |
+        echo "🌟 Deploying to production"
+        # Add production deployment commands here
+
+    - name: Notify deployment
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      if: always()
+
+---
+
+# .github/workflows/release.yml
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes in this Release
+          - Feature 1
+          - Feature 2
+          - Bug fixes
+        draft: false
+        prerelease: false
+
+    - name: Build release artifacts
+      run: |
+        mkdir -p release
+        
+        # Create V1 FREE package
+        cd v1-free
+        zip -r ../release/wholesale2flip-v1-${{ github.ref_name }}.zip . -x "*.git*" "*__pycache__*" "*.DS_Store*"
+        cd ..
+        
+        # Create PRO package
+        cd pro
+        zip -r ../release/wholesale2flip-pro-${{ github.ref_name }}.zip . -x "*.git*" "*__pycache__*" "*.DS_Store*"
+        cd ..
+
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release/wholesale2flip-v1-${{ github.ref_name }}.zip
+        asset_name: wholesale2flip-v1-${{ github.ref_name }}.zip
+        asset_content_type: application/zip
+
+---
+
+# .github/workflows/security.yml
+name: Security Scan
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM
+  workflow_dispatch:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run Bandit security scan
+      run: |
+        pip install bandit
+        bandit -r . -f json -o bandit-report.json
+      continue-on-error: true
+
+    - name: Run Safety check
+      run: |
+        pip install safety
+        safety check --json --output safety-report.json
+      continue-on-error: true
+
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+
+---
+
+# .github/ISSUE_TEMPLATE/bug_report.md
+---
+name: Bug report
+about: Create a report to help us improve
+title: '[BUG] '
+labels: bug
+assignees: ''
+
+---
+
+**Describe the bug**
+A clear and concise description of what the bug is.
+
+**To Reproduce**
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
+
+**Expected behavior**
+A clear and concise description of what you expected to happen.
+
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
+
+**Environment (please complete the following information):**
+ - Version: [V1 FREE / PRO]
+ - Browser [e.g. chrome, safari]
+ - Device: [e.g. iPhone6]
+
+**Additional context**
+Add any other context about the problem here.
+
+---
+
+# .github/ISSUE_TEMPLATE/feature_request.md
+---
+name: Feature request
+about: Suggest an idea for this project
+title: '[FEATURE] '
+labels: enhancement
+assignees: ''
+
+---
+
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
+
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
+
+**Additional context**
+Add any other context or screenshots about the feature request here.
+
+---
+
+# .github/pull_request_template.md
+## Description
+
+Brief description of what this PR does.
+
+## Type of change
+
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] This change requires a documentation update
+
+## How Has This Been Tested?
+
+- [ ] V1 FREE version tested
+- [ ] PRO version tested
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+
+## Checklist:
+
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes

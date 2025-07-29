@@ -1,0 +1,63 @@
+# Wholesale2Flip Cartel - Complete Repository Structure
+
+## 📁 Repository Structure
+
+```
+wholesale2flip-cartel/
+├── README.md                     # Main repository documentation
+├── LICENSE                       # MIT License
+├── .gitignore                   # Git ignore rules
+├── requirements.txt             # Python dependencies
+├── 
+├── v1-free/                     # V1 FREE VERSION
+│   ├── app_v1.py               # V1 Streamlit application
+│   ├── requirements.txt        # V1 dependencies
+│   ├── README.md              # V1 documentation
+│   └── .streamlit/
+│       └── config.toml        # V1 configuration
+├── 
+├── pro/                        # PRO VERSION
+│   ├── app_pro.py             # PRO Streamlit application
+│   ├── requirements.txt       # PRO dependencies
+│   ├── README.md             # PRO documentation
+│   └── .streamlit/
+│       └── config.toml       # PRO configuration
+├── 
+├── docs/                       # Documentation
+│   ├── deployment.md          # Deployment guide
+│   ├── features.md           # Feature documentation
+│   ├── api.md               # API documentation
+│   └── contributing.md      # Contribution guidelines
+├── 
+├── assets/                     # Static assets
+│   ├── images/               # Screenshots, logos
+│   ├── videos/              # Demo videos
+│   └── mockups/            # Design mockups
+├── 
+└── scripts/                   # Utility scripts
+    ├── deploy_v1.sh          # V1 deployment script
+    ├── deploy_pro.sh         # PRO deployment script
+    └── setup.py             # Setup utilities
+```
+
+## 🚀 Quick Start Commands
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/wholesale2flip-cartel.git
+cd wholesale2flip-cartel
+
+# For V1 FREE version
+cd v1-free
+pip install -r requirements.txt
+streamlit run app_v1.py
+
+# For PRO version
+cd pro
+pip install -r requirements.txt
+streamlit run app_pro.py
+```
+
+## 📋 File Contents Below
+
+Each file content is provided in the sections below for easy copy/paste into your GitHub repository.

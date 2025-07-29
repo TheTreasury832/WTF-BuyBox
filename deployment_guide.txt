@@ -1,0 +1,450 @@
+# Deployment Guide 🚀
+
+This guide covers deploying both V1 FREE and PRO versions of Wholesale2Flip Cartel.
+
+## 🎯 Deployment Options
+
+### 1. Streamlit Cloud (Recommended)
+- **Cost:** Free
+- **Ease:** Very Easy
+- **Scale:** Good for MVP/testing
+- **Custom Domain:** Available with GitHub Pages
+
+### 2. Heroku
+- **Cost:** $7-25/month
+- **Ease:** Easy
+- **Scale:** Good
+- **Custom Domain:** Included
+
+### 3. AWS/GCP/Azure
+- **Cost:** Variable
+- **Ease:** Advanced
+- **Scale:** Excellent
+- **Custom Domain:** Full control
+
+## 🌐 Streamlit Cloud Deployment
+
+### Prerequisites
+- GitHub account
+- Streamlit Cloud account (free)
+- Repository with your code
+
+### Step 1: Prepare Repository
+```bash
+# Fork or clone the repository
+git clone https://github.com/yourusername/wholesale2flip-cartel.git
+cd wholesale2flip-cartel
+
+# Ensure proper structure
+wholesale2flip-cartel/
+├── v1-free/
+│   ├── app_v1.py
+│   ├── requirements.txt
+│   └── .streamlit/config.toml
+└── pro/
+    ├── app_pro.py
+    ├── requirements.txt
+    └── .streamlit/config.toml
+```
+
+### Step 2: Deploy V1 FREE
+1. **Go to [share.streamlit.io](https://share.streamlit.io)**
+2. **Sign in with GitHub**
+3. **Click "New app"**
+4. **Repository:** `yourusername/wholesale2flip-cartel`
+5. **Branch:** `main`
+6. **Main file path:** `v1-free/app_v1.py`
+7. **App URL:** Choose `wholesale2flip-v1` or similar
+8. **Click "Deploy"**
+
+### Step 3: Deploy PRO Version
+1. **Click "New app" again**
+2. **Repository:** `yourusername/wholesale2flip-cartel`
+3. **Branch:** `main`
+4. **Main file path:** `pro/app_pro.py`
+5. **App URL:** Choose `wholesale2flip-pro` or similar
+6. **Click "Deploy"**
+
+### Step 4: Configure Custom Domains (Optional)
+```markdown
+# Add CNAME records to your DNS:
+v1.wholesale2flipcartel.com -> wholesale2flip-v1.streamlit.app
+pro.wholesale2flipcartel.com -> wholesale2flip-pro.streamlit.app
+```
+
+## 🔧 Heroku Deployment
+
+### Prerequisites
+- Heroku account
+- Heroku CLI installed
+- Git repository
+
+### Step 1: Prepare for Heroku
+Create `Procfile` in each app directory:
+
+**v1-free/Procfile:**
+```
+web: streamlit run app_v1.py --server.port=$PORT --server.address=0.0.0.0
+```
+
+**pro/Procfile:**
+```
+web: streamlit run app_pro.py --server.port=$PORT --server.address=0.0.0.0
+```
+
+### Step 2: Deploy V1 FREE
+```bash
+# Navigate to V1 directory
+cd v1-free
+
+# Initialize Heroku app
+heroku create wholesale2flip-v1
+
+# Add Python buildpack
+heroku buildpacks:set heroku/python
+
+# Deploy
+git add .
+git commit -m "Deploy V1 to Heroku"
+git push heroku main
+```
+
+### Step 3: Deploy PRO Version
+```bash
+# Navigate to PRO directory
+cd ../pro
+
+# Initialize Heroku app
+heroku create wholesale2flip-pro
+
+# Add Python buildpack
+heroku buildpacks:set heroku/python
+
+# Deploy
+git add .
+git commit -m "Deploy PRO to Heroku"
+git push heroku main
+```
+
+## ☁️ AWS Deployment
+
+### Using AWS Elastic Beanstalk
+
+### Step 1: Prepare Application
+Create `application.py` in each directory:
+
+**v1-free/application.py:**
+```python
+import streamlit.web.cli as stcli
+import sys
+
+if __name__ == '__main__':
+    sys.argv = ["streamlit", "run", "app_v1.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    sys.exit(stcli.main())
+```
+
+### Step 2: Create Elastic Beanstalk Application
+```bash
+# Install EB CLI
+pip install awsebcli
+
+# Initialize EB application
+eb init -p python-3.9 wholesale2flip-v1
+
+# Create environment
+eb create wholesale2flip-v1-env
+
+# Deploy
+eb deploy
+```
+
+## 🐳 Docker Deployment
+
+### Step 1: Create Dockerfiles
+
+**v1-free/Dockerfile:**
+```dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "app_v1.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
+
+**pro/Dockerfile:**
+```dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "app_pro.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
+
+### Step 2: Build and Run
+```bash
+# Build V1 image
+cd v1-free
+docker build -t wholesale2flip-v1 .
+docker run -p 8501:8501 wholesale2flip-v1
+
+# Build PRO image
+cd ../pro
+docker build -t wholesale2flip-pro .
+docker run -p 8502:8501 wholesale2flip-pro
+```
+
+## 🔐 Environment Variables
+
+### Required Variables
+```bash
+# Optional: For analytics
+GOOGLE_ANALYTICS_ID=GA_MEASUREMENT_ID
+
+# Optional: For database
+DATABASE_URL=postgresql://user:password@host:port/database
+
+# Optional: For email
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+```
+
+### Setting in Streamlit Cloud
+1. **Go to app settings**
+2. **Click "Secrets"**
+3. **Add TOML format:**
+```toml
+[general]
+google_analytics_id = "GA_MEASUREMENT_ID"
+
+[database]
+url = "postgresql://..."
+
+[email]
+smtp_server = "smtp.gmail.com"
+smtp_port = 587
+username = "your-email@gmail.com"
+password = "your-app-password"
+```
+
+## 📊 Monitoring & Analytics
+
+### Streamlit Analytics
+```python
+# Add to both apps
+import streamlit as st
+
+# Google Analytics
+if 'google_analytics_id' in st.secrets:
+    st.components.v1.html(f"""
+    <script async src="https://www.googletagmanager.com/gtag/js?id={st.secrets['google_analytics_id']}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){{dataLayer.push(arguments);}}
+        gtag('js', new Date());
+        gtag('config', '{st.secrets['google_analytics_id']}');
+    </script>
+    """, height=0)
+```
+
+### Health Checks
+Create `health.py` for monitoring:
+```python
+import streamlit as st
+import requests
+import time
+
+def health_check():
+    return {
+        "status": "healthy",
+        "timestamp": time.time(),
+        "version": "1.0.0"
+    }
+
+st.json(health_check())
+```
+
+## 🚀 CI/CD Pipeline
+
+### GitHub Actions
+Create `.github/workflows/deploy.yml`:
+```yaml
+name: Deploy to Streamlit Cloud
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: |
+        python -m pytest tests/
+    
+    - name: Deploy notification
+      run: |
+        echo "Deployment triggered for Streamlit Cloud"
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### 1. Requirements Not Found
+```bash
+# Ensure requirements.txt is in the correct directory
+v1-free/requirements.txt  # For V1
+pro/requirements.txt      # For PRO
+```
+
+#### 2. Import Errors
+```python
+# Add to top of app files
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+```
+
+#### 3. Port Issues
+```python
+# For Heroku deployment
+import os
+port = int(os.environ.get("PORT", 8501))
+```
+
+#### 4. Memory Issues
+```toml
+# Add to .streamlit/config.toml
+[server]
+maxUploadSize = 200
+maxMessageSize = 200
+
+[runner]
+magicEnabled = false
+```
+
+### Debugging
+```python
+# Add debug mode
+import streamlit as st
+
+DEBUG = st.secrets.get("debug", False)
+
+if DEBUG:
+    st.write("Debug info:", {
+        "session_state": dict(st.session_state),
+        "query_params": st.experimental_get_query_params()
+    })
+```
+
+## 🌐 Custom Domain Setup
+
+### Step 1: DNS Configuration
+```bash
+# Add CNAME record
+CNAME v1 wholesale2flip-v1.streamlit.app
+CNAME pro wholesale2flip-pro.streamlit.app
+```
+
+### Step 2: SSL Certificate
+- Automatically handled by Streamlit Cloud
+- For custom setups, use Let's Encrypt
+
+## 📈 Performance Optimization
+
+### Caching
+```python
+@st.cache_data
+def load_data():
+    # Cache expensive operations
+    return data
+
+@st.cache_resource
+def init_model():
+    # Cache ML models
+    return model
+```
+
+### Session State Management
+```python
+# Efficient session state
+if 'initialized' not in st.session_state:
+    st.session_state.initialized = True
+    st.session_state.data = load_initial_data()
+```
+
+## 🔒 Security Best Practices
+
+### 1. Secrets Management
+- Never commit secrets to Git
+- Use Streamlit secrets for sensitive data
+- Rotate API keys regularly
+
+### 2. Input Validation
+```python
+import re
+
+def validate_input(text):
+    # Sanitize user input
+    return re.sub(r'[<>]', '', text)
+```
+
+### 3. Rate Limiting
+```python
+import time
+
+def rate_limit():
+    if 'last_request' not in st.session_state:
+        st.session_state.last_request = 0
+    
+    if time.time() - st.session_state.last_request < 1:
+        st.error("Rate limit exceeded")
+        return False
+    
+    st.session_state.last_request = time.time()
+    return True
+```
+
+## 📞 Support
+
+### Deployment Issues
+- **Email:** devops@wholesale2flipcartel.com
+- **Discord:** [#deployment channel](https://discord.gg/wholesale2flip)
+- **Documentation:** This guide
+
+### Production Support
+- **24/7 Monitoring:** StatusPage integration
+- **Incident Response:** PagerDuty alerts
+- **Backup Strategy:** Daily automated backups
+
+---
+
+**Happy Deploying! 🚀**
